@@ -1,7 +1,7 @@
 <?php
 
 
-class Tasks {
+class Task {
     private int $id;
     private string $deadline_date;
     private string $description;

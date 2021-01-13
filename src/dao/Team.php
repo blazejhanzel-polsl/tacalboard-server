@@ -1,9 +1,8 @@
 <?php
 
 
-class Workspaces {
+class Team {
     private int $id;
-    private int $user_id;
     private string $name;
 
     /**
@@ -21,13 +20,6 @@ class Workspaces {
     }
 
     /**
-     * @return int
-     */
-    public function getUserId(): int {
-        return $this->user_id;
-    }
-
-    /**
      * @param int $id
      */
     public function setId(int $id): void {
@@ -39,12 +31,5 @@ class Workspaces {
      */
     public function setName(string $name): void {
         $this->name = $name;
-    }
-
-    /**
-     * @param int $user_id
-     */
-    public function setUserId(int $user_id): void {
-        $this->user_id = $user_id;
     }
 }

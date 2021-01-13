@@ -1,12 +1,21 @@
 <?php
+require('../DatabaseProvider.php');
 
 
-class Tags {
+class Tag {
     private int $id;
     private int $project_id;
     private string $icon;
     private string $name;
     private int $position;
+
+    // SQL Queries
+
+    public function deleteById($id): void {
+
+    }
+
+    // Getters and setters
 
     /**
      * @return string

@@ -1,7 +1,7 @@
 <?php
 
 
-class Users {
+class User {
     private int $id;
     private string $email;
     private string $password;

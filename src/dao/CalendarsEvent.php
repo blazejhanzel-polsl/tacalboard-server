@@ -1,7 +1,7 @@
 <?php
 
 
-class CalendarsEvents {
+class CalendarsEvent {
     private int $id;
     private int $calendar_id;
     private string $tilte;

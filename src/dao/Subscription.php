@@ -1,7 +1,7 @@
 <?php
 
 
-class Subscriptions {
+class Subscription {
     private int $id;
     private int $user_id;
     private string $date_from;

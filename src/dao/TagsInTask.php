@@ -1,7 +1,7 @@
 <?php
 
 
-class TagsInTasks {
+class TagsInTask {
     private int $id;
     private int $tag_id;
     private int $task_id;

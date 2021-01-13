@@ -1,17 +1,32 @@
 <?php
 
 
-class ProjectsInWorkspaces {
+class Calendar {
     private int $id;
     private int $project_id;
-    private int $workspace_id;
+    private string $name;
+    private string $icon;
     private int $position;
+
+    /**
+     * @return string
+     */
+    public function getIcon(): string {
+        return $this->icon;
+    }
 
     /**
      * @return int
      */
     public function getId(): int {
         return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string {
+        return $this->name;
     }
 
     /**
@@ -29,10 +44,10 @@ class ProjectsInWorkspaces {
     }
 
     /**
-     * @return int
+     * @param string $icon
      */
-    public function getWorkspaceId(): int {
-        return $this->workspace_id;
+    public function setIcon(string $icon): void {
+        $this->icon = $icon;
     }
 
     /**
@@ -40,6 +55,13 @@ class ProjectsInWorkspaces {
      */
     public function setId(int $id): void {
         $this->id = $id;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName(string $name): void {
+        $this->name = $name;
     }
 
     /**
@@ -54,12 +76,5 @@ class ProjectsInWorkspaces {
      */
     public function setProjectId(int $project_id): void {
         $this->project_id = $project_id;
-    }
-
-    /**
-     * @param int $workspace_id
-     */
-    public function setWorkspaceId(int $workspace_id): void {
-        $this->workspace_id = $workspace_id;
     }
 }

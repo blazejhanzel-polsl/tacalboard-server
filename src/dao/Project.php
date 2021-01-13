@@ -1,19 +1,11 @@
 <?php
 
 
-class Calendars {
+class Project {
     private int $id;
-    private int $project_id;
+    private int $team_id;
     private string $name;
-    private string $icon;
     private int $position;
-
-    /**
-     * @return string
-     */
-    public function getIcon(): string {
-        return $this->icon;
-    }
 
     /**
      * @return int
@@ -39,15 +31,8 @@ class Calendars {
     /**
      * @return int
      */
-    public function getProjectId(): int {
-        return $this->project_id;
-    }
-
-    /**
-     * @param string $icon
-     */
-    public function setIcon(string $icon): void {
-        $this->icon = $icon;
+    public function getTeamId(): int {
+        return $this->team_id;
     }
 
     /**
@@ -72,9 +57,9 @@ class Calendars {
     }
 
     /**
-     * @param int $project_id
+     * @param int $team_id
      */
-    public function setProjectId(int $project_id): void {
-        $this->project_id = $project_id;
+    public function setTeamId(int $team_id): void {
+        $this->team_id = $team_id;
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 
-class UsersInTeams {
+class UsersInTeam {
     private int $id;
     private int $user_id;
     private int $team_id;

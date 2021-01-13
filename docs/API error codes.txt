@@ -1,0 +1,3 @@
+authorization-not-logged 401
+authorization-user-doesnt-exist 401
+authorization-wrong-password 401

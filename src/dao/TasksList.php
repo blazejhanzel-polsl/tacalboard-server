@@ -1,12 +1,13 @@
 <?php
 
 
-class Boards {
+class TasksList {
     private int $id;
     private int $project_id;
     private string $name;
     private string $icon;
     private int $position;
+    private bool $predefined;
 
     /**
      * @return string
@@ -44,6 +45,13 @@ class Boards {
     }
 
     /**
+     * @return bool
+     */
+    public function isPredefined(): bool {
+        return $this->predefined;
+    }
+
+    /**
      * @param string $icon
      */
     public function setIcon(string $icon): void {
@@ -69,6 +77,13 @@ class Boards {
      */
     public function setPosition(int $position): void {
         $this->position = $position;
+    }
+
+    /**
+     * @param bool $predefined
+     */
+    public function setPredefined(bool $predefined): void {
+        $this->predefined = $predefined;
     }
 
     /**

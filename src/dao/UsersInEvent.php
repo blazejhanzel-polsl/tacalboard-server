@@ -1,7 +1,7 @@
 <?php
 
 
-class UsersInEvents {
+class UsersInEvent {
     private int $id;
     private int $user_id;
     private int $event_id;

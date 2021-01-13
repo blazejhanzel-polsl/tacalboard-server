@@ -1,7 +1,7 @@
 <?php
 
 
-class Repeatings {
+class Repeating {
     private int $id;
     private bool $monday;
     private bool $tuesday;

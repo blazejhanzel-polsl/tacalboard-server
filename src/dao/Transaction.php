@@ -1,7 +1,7 @@
 <?php
 
 
-class Transactions {
+class Transaction {
     private int $id;
     private int $user_id;
     private string $transaction_date;

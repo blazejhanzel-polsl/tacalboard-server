@@ -1,10 +1,10 @@
 <?php
 
 
-class EventsReminders {
+class TagsInEvent {
     private int $id;
+    private int $tag_id;
     private int $event_id;
-    private string $reminder_date;
 
     /**
      * @return int
@@ -21,10 +21,10 @@ class EventsReminders {
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getReminderDate(): string {
-        return $this->reminder_date;
+    public function getTagId(): int {
+        return $this->tag_id;
     }
 
     /**
@@ -42,14 +42,9 @@ class EventsReminders {
     }
 
     /**
-     * @param string $reminder_date
+     * @param int $tag_id
      */
-    public function setReminderDate(string $reminder_date): void {
-        if (preg_match('/[0-9]{1,4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}/', $reminder_date)) {
-            $this->reminder_date = $reminder_date;
-        }
-    else {
-            throw new Exception ("Unhandled date format.");
-        }
+    public function setTagId(int $tag_id): void {
+        $this->tag_id = $tag_id;
     }
 }

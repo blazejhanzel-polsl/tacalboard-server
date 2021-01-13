@@ -1,0 +1,1 @@
+GET /authorize - returns information about current session, user info and code 200 if user is logged in or 401 if user isn't logged
