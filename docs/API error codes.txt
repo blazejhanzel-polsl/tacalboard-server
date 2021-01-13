@@ -1,3 +1,4 @@
-authorization-not-logged 401
-authorization-user-doesnt-exist 401
-authorization-wrong-password 401
+401	authorization-not-logged
+401	authorization-user-doesnt-exist
+401	authorization-wrong-password
+500	database-doubled-id
