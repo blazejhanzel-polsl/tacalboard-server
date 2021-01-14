@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../DatabaseProvider.php';
 
 
 class User {
@@ -6,9 +7,44 @@ class User {
     private string $email;
     private string $password;
 
-    function __construct() {
-
+    public function __construct(int $id, string $email, string $password) {
+        $this->setId($id);
+        $this->setEmail($email);
+        $this->setPassword($password);
     }
+
+    // SQL Queries
+
+    public static function deleteById(int $id): bool {
+        return DatabaseProvider::query("DELETE FROM users WHERE `id` = $id;");
+    }
+
+    public static function getById(int $id): ?User {
+        $result = DatabaseProvider::query("SELECT * FROM users WHERE `id` = $id;");
+        if ($result->num_rows == 1) {
+            $row = $result->fetch_assoc();
+            return new User(
+                $row['id'],
+                $row['email'],
+                $row['password']
+            );
+        }
+        return null;
+    }
+
+    public static function insert(User $u): bool {
+        return DatabaseProvider::query(
+            "INSERT INTO users (`id`, `email`, `password`) VALUES ($u->id, '$u->email', '$u->password');"
+        );
+    }
+
+    public static function update(User $u): bool {
+        return DatabaseProvider::query(
+            "UPDATE users SET `email` = '$u->email', `password` = '$u->password' WHERE `id` = $u->id;"
+        );
+    }
+
+    // Getters and setters
 
     /**
      * @return string

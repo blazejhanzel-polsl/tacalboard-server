@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../DatabaseProvider.php';
 
 
 class Transaction {
@@ -8,6 +9,73 @@ class Transaction {
     private int $amount_paid;
     private string $transaction_currency;
     private string $transaction_status;
+
+    public function __construct(int $id, int $user_id, string $transaction_date, int $amount_paid,
+                                ?string $transaction_currency, string $transaction_status) {
+        $this->setId($id);
+        $this->setUserId($user_id);
+        $this->setTransactionDate($transaction_date);
+        $this->setAmountPaid($amount_paid);
+        $this->setTransactionCurrency($transaction_currency);
+        $this->setTransactionStatus($transaction_status);
+    }
+
+    // SQL Queries
+
+    public static function deleteById(int $id): bool {
+        return DatabaseProvider::query("DELETE FROM transactions WHERE `id` = $id;");
+    }
+
+    public static function getAllByUserId(int $id): array {
+        $ret = array();
+        $result = DatabaseProvider::query("SELECT * FROM transactions WHERE `user_id` = $id ORDER BY `transaction_date`;");
+        if ($result->num_row > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $ret[] = new Transaction(
+                    $row['id'],
+                    $row['user_id'],
+                    $row['transaction_date'],
+                    $row['amount_paid'] * 100,
+                    $row['transaction_currency'],
+                    $row['transaction_status']
+                );
+            }
+        }
+        return $ret;
+    }
+
+    public static function getById(int $id): ?Transaction {
+        $result = DatabaseProvider::query("SELECT * FROM transactions WHERE `id` = $id;");
+        if ($result->num_rows == 1) {
+            $row = $result->fetch_assoc();
+            return new Transaction(
+                $row['id'],
+                $row['user_id'],
+                $row['transaction_date'],
+                $row['amount_paid'] * 100,
+                $row['transaction_currency'],
+                $row['transaction_status']
+            );
+        }
+        return null;
+    }
+
+    public static function insert(Transaction $t): bool {
+        return DatabaseProvider::query(
+            "INSERT INTO transactions (`id`, `user_id`, `transaction_date`, `amount_paid`, `transaction_currency`, `transaction_status`)
+                    VALUES ($t->id, $t->user_id, '$t->transaction_date', ".($t->amount_paid / 100).", $t->transaction_currency,
+                    '$t->transaction_status');"
+        );
+    }
+
+    public static function update(Transaction $t): bool {
+        return DatabaseProvider::query(
+            "UPDATE transactions SET `user_id` = $t->user_id, `transaction_date` = '$t->transaction_date', `amount_paid` = $t->amount_paid,
+                        `transaction_currency` = $t->transaction_currency, `transaction_status` = '$t->transaction_status' WHERE `id` = $t->id;"
+        );
+    }
+
+    // Getters and setters
 
     /**
      * @return int

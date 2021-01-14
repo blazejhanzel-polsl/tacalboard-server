@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../DatabaseProvider.php';
 
 
 class TasksList {
@@ -8,6 +9,71 @@ class TasksList {
     private string $icon;
     private int $position;
     private bool $predefined;
+
+    public function __construct(int $id, int $project_id, string $name, string $icon, int $position, bool $predefined) {
+        $this->setId($id);
+        $this->setProjectId($project_id);
+        $this->setName($name);
+        $this->setIcon($icon);
+        $this->setPosition($position);
+        $this->setPredefined($predefined);
+    }
+
+    // SQL Queries
+
+    public static function deleteById(int $id): bool {
+        return DatabaseProvider::query("DELETE FROM tasks_lists WHERE `id` = $id;");
+    }
+
+    public static function getAllByProjectId(int $id): array {
+        $ret = array();
+        $result = DatabaseProvider::query("SELECT * FROM tasks_lists WHERE `project_id` = $id;");
+        if ($result->num_row > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $ret[] = new TasksList(
+                    $row['id'],
+                    $row['project_id'],
+                    $row['name'],
+                    $row['icon'],
+                    $row['position'],
+                    $row['predefined']
+                );
+            }
+        }
+        return $ret;
+    }
+
+    public static function getById(int $id): ?TasksList {
+        $result = DatabaseProvider::query("SELECT * FROM tasks_lists WHERE `id` = $id;");
+        if ($result->num_rows == 1) {
+            $row = $result->fetch_assoc();
+            return new TasksList(
+                $row['id'],
+                $row['project_id'],
+                $row['name'],
+                $row['icon'],
+                $row['position'],
+                $row['predefined']
+            );
+        }
+        return null;
+    }
+
+    public static function insert(TasksList $tl): bool {
+        return DatabaseProvider::query(
+            "INSERT INTO tasks_lists (`id`, `project_id`, `name`, `icon`, `position`, `predefined`)
+                    VALUES ($tl->id, $tl->project_id, '$tl->name', '$tl->icon', $tl->position, $tl->predefined);"
+        );
+    }
+
+    public static function update(TasksList $tl): bool {
+        return DatabaseProvider::query(
+            "UPDATE tasks_lists SET `project_id` = $tl->project_id, `name` = '$tl->name', `icon` = '$tl->icon',
+                       `position` = $tl->position, `predefined` = $tl->predefined WHERE `id` = $tl->id;"
+        );
+    }
+
+    // Getters and setters
 
     /**
      * @return string

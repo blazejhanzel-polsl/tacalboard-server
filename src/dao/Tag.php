@@ -21,12 +21,12 @@ class Tag {
     // SQL Queries
 
     public static function deleteById(int $id): bool {
-        return DatabaseProvider::query('DELETE FROM `tags` WHERE `id` = $id;');
+        return DatabaseProvider::query("DELETE FROM tags WHERE `id` = $id;");
     }
 
     public static function getAllByProjectId(int $project_id): array {
         $ret = array();
-        $result = DatabaseProvider::query('SELECT * FROM `tags` WHERE `project_id` = $project_id ORDER BY `position`;');
+        $result = DatabaseProvider::query("SELECT * FROM tags WHERE `project_id` = $project_id ORDER BY `position`;");
         if ($result->num_row > 0) {
             while ($row = $result->fetch_assoc()) {
                 $ret[] = new Tag(
@@ -42,7 +42,7 @@ class Tag {
     }
 
     public static function getById(int $id): ?Tag {
-        $result = DatabaseProvider::query('SELECT * FROM `tags` WHERE `id` = $id;');
+        $result = DatabaseProvider::query("SELECT * FROM tags WHERE `id` = $id;");
         if ($result->num_rows == 1) {
             $row = $result->fetch_assoc();
             return new Tag(
@@ -52,24 +52,22 @@ class Tag {
                 $row['name'],
                 $row['position']
             );
-        } else if ($result->num_rows > 1) {
-            echo new ErrorReturn(
-                'database-doubled-id',
-                'Database has doubled records.',
-                500,
-                'Server found doubled records in database. Request cannot be completed. Please contact support for more information.'
-            );
-            return null;
         } else {
             return null;
         }
     }
 
+    public static function insert(Tag $tag): bool {
+        return DatabaseProvider::query(
+            "INSERT INTO tags (`id`, `project_id`, `icon`, `name`, `position`)".
+            "VALUES ($tag->id, $tag->project_id, '$tag->icon', '$tag->name', $tag->position);"
+        );
+    }
+
     public static function update(Tag $tag): bool {
         return DatabaseProvider::query(
-            "UPDATE `tags` SET `project_id` = $tag->getProjectId(), ".
-            "`icon` = '$tag->getIcon()', `name` = '$tag->getName()', ".
-            "`position` = $tag->getPosition() WHERE `id` = $tag->getId();"
+            "UPDATE tags SET `project_id` = $tag->project_id, ".
+            "`icon` = '$tag->icon', `name` = '$tag->name', `position` = $tag->position WHERE `id` = $tag->id;"
         );
     }
 

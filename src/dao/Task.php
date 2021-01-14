@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../DatabaseProvider.php';
 
 
 class Task {
@@ -13,6 +14,69 @@ class Task {
     private int $repeating_id;
     private int $tasks_list_id;
     private string $title;
+
+    public function __construct(int $id, string $deadline_date, ?string $description, bool $done, int $duration, int $position,
+      int $priority, ?string $reminder_date, ?int $repeating_id, int $tasks_list_id, string $title) {
+        $this->setId($id);
+        $this->setDeadlineDate($deadline_date);
+        $this->setDescription($description);
+        $this->setDone($done);
+        $this->setDuration($duration);
+        $this->setPosition($position);
+        $this->setPriority($priority);
+        $this->setReminderDate($reminder_date);
+        $this->setRepeatingId($repeating_id);
+        $this->setTasksListId($tasks_list_id);
+        $this->setTitle($title);
+    }
+
+    // SQL Queries
+
+    public static function deleteById(int $id): bool {
+        return DatabaseProvider::query("DELETE FROM tasks WHERE `id` = $id;");
+    }
+
+    public static function getById(int $id): ?Task {
+        $result = DatabaseProvider::query("SELECT * FROM tasks WHERE `id` = $id;");
+        if ($result->num_rows == 1) {
+            $row = $result->fetch_assoc();
+            return new Task(
+                $row['id'],
+                $row['deadline_date'],
+                $row['description'],
+                $row['done'],
+                $row['duration'],
+                $row['position'],
+                $row['priority'],
+                $row['reminder_date'],
+                $row['repeating_id'],
+                $row['tasks_list_id'],
+                $row['title']
+            );
+        }
+        return null;
+    }
+
+    public static function insert(Task $task): bool {
+        return DatabaseProvider::query(
+            "INSERT INTO tasks (`id`, `deadline_date`, `description`, `done`, `duration`, `position`, `priority`,
+                   `reminder_date`, `repeating_id`, `tasks_list_id`, `title`)
+                   VALUES ($task->id, '$task->deadline_date', '$task->description', '$task->done', '$task->duration',
+                           $task->position, $task->priority, '$task->reminder_date', $task->repeating_id,
+                           $task->tasks_list_id, '$task->title');"
+        );
+    }
+
+    public static function update(Task $task): bool {
+        return DatabaseProvider::query(
+            "UPDATE tasks SET `deadline_date` = '$task->deadline_date', `description` = '$task->description', `done` = $task->done,
+                 `duration` = $task->duration, `position` = $task->position, `priority` = $task->priority,
+                 `reminder_date` = '$task->reminder_date', `repeating_id` = $task->repeating_id,
+                 `tasks_list_id` = $task->tasks_list_id, `title` = '$task->title' WHERE `id` = $task->id;"
+        );
+    }
+
+    // Getters and setters
 
     /**
      * @return string

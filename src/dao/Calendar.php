@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../DatabaseProvider.php';
 
 
 class Calendar {
@@ -7,6 +8,69 @@ class Calendar {
     private string $name;
     private string $icon;
     private int $position;
+
+    public function __construct(int $id, int $project_id, string $name, string $icon, int $position) {
+        $this->setId($id);
+        $this->setProjectId($project_id);
+        $this->setName($name);
+        $this->setIcon($icon);
+        $this->setPosition($position);
+    }
+
+    // SQL Queries
+
+    public static function deleteById(int $id): bool {
+        return DatabaseProvider::query("DELETE FROM calendars WHERE `id` = $id;");
+    }
+
+    public static function getAllByProjectId(int $project_id): array {
+        $ret = array();
+        $result = DatabaseProvider::query("SELECT * FROM calendars WHERE `project_id` = $project_id ORDER BY `position`;");
+        if ($result->num_row > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $ret[] = new Calendar(
+                    $row['id'],
+                    $row['project_id'],
+                    $row['name'],
+                    $row['icon'],
+                    $row['position']
+                );
+            }
+        }
+        return $ret;
+    }
+
+    public static function getById(int $id): ?Calendar {
+        $result = DatabaseProvider::query("SELECT * FROM calendars WHERE `id` = $id;");
+        if ($result->num_rows == 1) {
+            $row = $result->fetch_assoc();
+            return new Calendar(
+                $row['id'],
+                $row['project_id'],
+                $row['name'],
+                $row['icon'],
+                $row['position']
+            );
+        } else {
+            return null;
+        }
+    }
+
+    public static function insert(Calendar $cal): bool {
+        return DatabaseProvider::query(
+            "INSERT INTO calendars (`id`, `project_id`, `name`, `icon`, `position`) 
+                    VALUES ($cal->id, $cal->project_id, '$cal->name', '$cal->icon', $cal->position);"
+        );
+    }
+
+    public static function update(Calendar $cal): bool {
+        return DatabaseProvider::query(
+            "UPDATE calendars SET `project_id` = $cal->project_id, `name` = '$cal->name', `icon` = '$cal->icon',
+                     `position` = $cal->position WHERE `id` = $cal->id;"
+        );
+    }
+
+    // Getters and setters
 
     /**
      * @return string

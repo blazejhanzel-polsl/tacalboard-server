@@ -1,10 +1,11 @@
 <?php
+require_once __DIR__ . '/../DatabaseProvider.php';
 
 
 class CalendarsEvent {
     private int $id;
     private int $calendar_id;
-    private string $tilte;
+    private string $title;
     private bool $all_day;
     private string $start_date;
     private string $end_date;
@@ -12,8 +13,96 @@ class CalendarsEvent {
     private string $location;
     private string $color;
     private string $description;
-    private string $visability;
+    private string $visibility;
     private string $accessibility;
+
+    public function __construct(int $id, int $calendar_id, string $title, bool $all_day, string $start_date, string $end_date,
+      ?int $repeating_id, ?string $location, ?string $color, ?string $description, string $visibility, string $accessibility) {
+        $this->setId($id);
+        $this->setCalendarId($calendar_id);
+        $this->setTitle($title);
+        $this->setAllDay($all_day);
+        $this->setStartDate($start_date);
+        $this->setEndDate($end_date);
+        $this->setRepeatingId($repeating_id);
+        $this->setLocation($location);
+        $this->setColor($color);
+        $this->setDescription($description);
+        $this->setVisibility($visibility);
+        $this->setAccessibility($accessibility);
+    }
+
+    // SQL Queries
+
+    public static function deleteById(int $id): bool {
+        return DatabaseProvider::query("DELETE FROM calendars_events WHERE `id` = $id;");
+    }
+
+    public static function getAllByCalendarId(int $calendar_id): array {
+        $ret = array();
+        $result = DatabaseProvider::query("SELECT * FROM calendars_events WHERE `calendar_id` = $calendar_id ORDER BY `start_date`;");
+        if ($result->num_row > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $ret[] = new CalendarsEvent(
+                    $row['id'],
+                    $row['calendar_id'],
+                    $row['title'],
+                    $row['all_day'],
+                    $row['start_date'],
+                    $row['end_date'],
+                    $row['repeating_id'],
+                    $row['location'],
+                    $row['color'],
+                    $row['description'],
+                    $row['visibility'],
+                    $row['accessibility']
+                );
+            }
+        }
+        return $ret;
+    }
+
+    public static function getById(int $id): ?CalendarsEvent {
+        $result = DatabaseProvider::query("SELECT * FROM calendars_events WHERE `id` = $id;");
+        if ($result->num_rows == 1) {
+            $row = $result->fetch_assoc();
+            return new CalendarsEvent(
+                $row['id'],
+                $row['calendar_id'],
+                $row['title'],
+                $row['all_day'],
+                $row['start_date'],
+                $row['end_date'],
+                $row['repeating_id'],
+                $row['location'],
+                $row['color'],
+                $row['description'],
+                $row['visibility'],
+                $row['accessibility']
+            );
+        }
+        return null;
+    }
+
+    public static function insert(CalendarsEvent $cal): bool {
+        return DatabaseProvider::query(
+            "INSERT INTO calendars_events (`id`, `calendar_id`, `title`, `all_day`, `start_date`, `end_date`, `repeating_id`,
+                              `location`, `color`, `description`, `visibility`, `accessibility`)
+                              VALUES ($cal->id, $cal->calendar_id, '$cal->title', $cal->all_day, '$cal->start_date', '$cal->end_date',
+                                      $cal->repeating_id, '$cal->location', '$cal->color', '$cal->description', '$cal->visibility', '$cal->accessibility');"
+        );
+    }
+
+    public static function update(CalendarsEvent $cal): bool {
+        return DatabaseProvider::query(
+            "UPDATE calendars_events SET `calendar_id` = $cal->calendar_id, `title` = '$cal->title', `all_day` = $cal->all_day,
+                            `start_date` = '$cal->start_date', `end_date` = '$cal->end_date', `repeating_id` = $cal->repeating_id,
+                            `location` = '$cal->location', `color` = '$cal->color', `description` = '$cal->description',
+                            `visibility` = '$cal->visibility', `accessibility` = '$cal->accessibility' WHERE `id` = $cal->id;"
+        );
+    }
+
+    // Getters and setters
 
     /**
      * @return string
@@ -81,15 +170,15 @@ class CalendarsEvent {
     /**
      * @return string
      */
-    public function getTilte(): string {
-        return $this->tilte;
+    public function getTitle(): string {
+        return $this->title;
     }
 
     /**
      * @return string
      */
-    public function getVisability(): string {
-        return $this->visability;
+    public function getVisibility(): string {
+        return $this->visibility;
     }
 
     /**
@@ -198,21 +287,21 @@ class CalendarsEvent {
     }
 
     /**
-     * @param string $tilte
+     * @param string $title
      */
-    public function setTilte(string $tilte): void {
-        $this->tilte = $tilte;
+    public function setTitle(string $title): void {
+        $this->title = $title;
     }
 
     /**
-     * @param string $visability
+     * @param string $visibility
      * @throws Exception
      */
-    public function setVisability(string $visability): void {
-        switch ($visability) {
+    public function setVisibility(string $visibility): void {
+        switch ($visibility) {
             case 'private':
             case 'public':
-                $this->visability = $visability;
+                $this->visibility = $visibility;
                 break;
             default:
                 throw new Exception('Unhandled content of string.');

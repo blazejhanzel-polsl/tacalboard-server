@@ -1,10 +1,68 @@
 <?php
+require_once __DIR__ . '/../DatabaseProvider.php';
 
 
 class EventsReminder {
     private int $id;
     private int $event_id;
     private string $reminder_date;
+
+    public function __construct(int $id, int $event_id, string $reminder_date) {
+        $this->setId($id);
+        $this->setEventId($event_id);
+        $this->setReminderDate($reminder_date);
+    }
+
+    // SQL Queries
+
+    public static function deleteById(int $id): bool {
+        return DatabaseProvider::query("DELETE FROM events_reminders WHERE `id` = $id;");
+    }
+
+    public static function getAllByEventId(int $event_id): array {
+        $ret = array();
+        $result = DatabaseProvider::query("SELECT * FROM events_reminders WHERE `event_id` = $event_id ORDER BY `reminder_date`");
+        if ($result->num_row > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $ret[] = new EventsReminder(
+                    $row['id'],
+                    $row['event_id'],
+                    $row['reminder_date']
+                );
+            }
+        }
+        return $ret;
+    }
+
+    public static function getById(int $id): ?EventsReminder {
+        $result = DatabaseProvider::query("SELECT * FROM events_reminders WHERE `id` = $id;");
+        if ($result->num_rows == 1) {
+            $row = $result->fetch_assoc();
+            return new EventsReminder(
+                $row['id'],
+                $row['event_id'],
+                $row['reminder_date']
+            );
+        } else {
+            return null;
+        }
+    }
+
+    public static function insert(EventsReminder $reminder): bool {
+        return DatabaseProvider::query(
+            "INSERT INTO events_reminders (`id`, `event_id`, `reminder_date`)
+                    VALUES ($reminder->id, $reminder->event_id, '$reminder->reminder_date');"
+        );
+    }
+
+    public static function update(EventsReminder $reminder): bool {
+        return DatabaseProvider::query(
+            "UPDATE events_reminders SET `event_id` = $reminder->event_id, `reminder_date` = '$reminder->reminder_date'
+                    WHERE `id` = $reminder->id;"
+        );
+    }
+
+    // Getters and setters
 
     /**
      * @return int

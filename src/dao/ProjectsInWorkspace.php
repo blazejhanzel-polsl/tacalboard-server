@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../DatabaseProvider.php';
 
 
 class ProjectsInWorkspace {
@@ -6,6 +7,65 @@ class ProjectsInWorkspace {
     private int $project_id;
     private int $workspace_id;
     private int $position;
+
+    public function __construct(int $id, int $project_id, int $workspace_id, int $position) {
+        $this->setId($id);
+        $this->setProjectId($project_id);
+        $this->setWorkspaceId($workspace_id);
+        $this->setPosition($position);
+    }
+
+    // SQL Queries
+
+    public static function deleteById(int $id): bool {
+        return DatabaseProvider::query("DELETE FROM projects_in_workspaces WHERE `id` = $id;");
+    }
+
+    public static function getAllByWorkspaceId(int $id): array {
+        $ret = array();
+        $result = DatabaseProvider::query("SELECT * FROM projects_in_workspaces WHERE `workspace_id` = $id ORDER BY `position`;");
+        if ($result->num_row > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $ret[] = new ProjectsInWorkspace(
+                    $row['id'],
+                    $row['project_id'],
+                    $row['workspace_id'],
+                    $row['position']
+                );
+            }
+        }
+        return $ret;
+    }
+
+    public static function getById(int $id): ?ProjectsInWorkspace {
+        $result = DatabaseProvider::query("SELECT * FROM projects_in_workspaces WHERE `id` = $id;");
+        if ($result->num_rows == 1) {
+            $row = $result->fetch_assoc();
+            return new ProjectsInWorkspace(
+                $row['id'],
+                $row['project_id'],
+                $row['workspace_id'],
+                $row['position']
+            );
+        }
+        return null;
+    }
+
+    public static function insert(ProjectsInWorkspace $piw): bool {
+        return DatabaseProvider::query(
+            "INSERT INTO projects_in_workspaces (`id`, `project_id`, `workspace_id`, `position`) VALUES ($piw->id,
+                                                                   $piw->project_id, $piw->workspace_id, $piw->position);"
+        );
+    }
+
+    public static function update(ProjectsInWorkspace $piw): bool {
+        return DatabaseProvider::query(
+            "UPDATE projects_in_workspaces SET `project_id` = $piw->project_id, `workspace_id` = $piw->workspace_id,
+                                  `position` = $piw->position WHERE `id` = $piw->id;"
+        );
+    }
+
+    // Getters and setters
 
     /**
      * @return int

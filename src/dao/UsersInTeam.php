@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../DatabaseProvider.php';
 
 
 class UsersInTeam {
@@ -6,6 +7,64 @@ class UsersInTeam {
     private int $user_id;
     private int $team_id;
     private string $role;
+
+    public function __construct(int $id, int $user_id, int $team_id, string $role) {
+        $this->setId($id);
+        $this->setUserId($user_id);
+        $this->setTeamId($team_id);
+        $this->setRole($role);
+    }
+
+    // SQL Queries
+
+    public static function deleteById(int $id): bool {
+        return DatabaseProvider::query("DELETE FROM users_in_teams WHERE `id` = $id;");
+    }
+
+    public static function getAllByTeamId(int $id): array {
+        $ret = array();
+        $result = DatabaseProvider::query("SELECT * FROM users_in_teams WHERE `team_id` = $id;");
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $ret[] = new UsersInTeam(
+                    $row['id'],
+                    $row['user_id'],
+                    $row['team_id'],
+                    $row['role']
+                );
+            }
+        }
+        return $ret;
+    }
+
+    public static function getById(int $id): ?UsersInTeam {
+        $result = DatabaseProvider::query("SELECT * FROM users_in_teams WHERE `id` = $id;");
+        if ($result->num_rows == 1) {
+            $row = $result->fetch_assoc();
+            return new UsersInTeam(
+                $row['id'],
+                $row['user_id'],
+                $row['team_id'],
+                $row['role']
+            );
+        }
+        return null;
+    }
+
+    public static function insert(UsersInTeam $uit): bool {
+        return DatabaseProvider::query(
+            "INSERT INTO users_in_teams (`id`, `user_id`, `team_id`, `role`)
+                    VALUES ($uit->id, $uit->user_id, $uit->team_id, '$uit->role');"
+        );
+    }
+
+    public static function update(UsersInTeam $uit): bool {
+        return DatabaseProvider::query(
+            "UPDATE users_in_teams SET `user_id` = $uit->user_id, `team_id` = $uit->team_id, `role` = '$uit->role' WHERE `id` = $uit->id;"
+        );
+    }
+
+    // Getters and setters
 
     /**
      * @return int

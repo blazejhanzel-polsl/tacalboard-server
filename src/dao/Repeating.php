@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../DatabaseProvider.php';
 
 
 class Repeating {
@@ -12,6 +13,64 @@ class Repeating {
     private bool $sunday;
     private int $step;
     private string $end_date;
+
+    public function __construct(int $id, bool $monday, bool $tuesday, bool $wednesday, bool $thursday, bool $friday,
+      bool $saturday, bool $sunday, int $step, string $end_date) {
+        $this->setId($id);
+        $this->setMonday($monday);
+        $this->setTuesday($tuesday);
+        $this->setWednesday($wednesday);
+        $this->setThursday($thursday);
+        $this->setFriday($friday);
+        $this->setSaturday($saturday);
+        $this->setSunday($sunday);
+        $this->setStep($step);
+        $this->setEndDate($end_date);
+    }
+
+    // SQL Queries
+
+    public static function deleteById(int $id): bool {
+        return DatabaseProvider::query("DELETE FROM repeatings WHERE `id` = $id;");
+    }
+
+    public static function getById(int $id): ?Repeating {
+        $result = DatabaseProvider::query("SELECT * FROM repeatings WHERE `id` = $id;");
+        if ($result->num_rows == 1) {
+            $row = $result->fetch_assoc();
+            return new Repeating(
+                $row['id'],
+                $row['monday'],
+                $row['tuesday'],
+                $row['wednesday'],
+                $row['thursday'],
+                $row['friday'],
+                $row['saturday'],
+                $row['sunday'],
+                $row['step'],
+                $row['end_date']
+            );
+        }
+        return null;
+    }
+
+    public static function insert(Repeating $rep): bool {
+        return DatabaseProvider::query(
+            "INSERT INTO repeatings (`id`, `monday`, `tuesday`, `wednesday`, `thursday`, `friday`, `saturday`, `sunday`, `step`, `end_date`) 
+                                VALUES ($rep->id, $rep->monday, $rep->tuesday, $rep->wednesday, $rep->thursday, $rep->friday,
+                                        $rep->saturday, $rep->sunday, $rep->step, '$rep->end_date');"
+        );
+    }
+
+    public static function update(Repeating $rep): bool {
+        return DatabaseProvider::query(
+            "UPDATE repeatings SET `monday` = $rep->monday, `tuesday` = $rep->tuesday, `wednesday` = $rep->wednesday,
+                      `thursday` = $rep->thursday, `friday` = $rep->thursday, `saturday` = $rep->saturday, `sunday` = $rep->sunday,
+                      `step` = $rep->step, `end_date` = '$rep->end_date' WHERE `id` = $rep->id;"
+        );
+    }
+
+    // Getters and setters
 
     /**
      * @return int

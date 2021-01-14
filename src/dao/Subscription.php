@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../DatabaseProvider.php';
 
 
 class Subscription {
@@ -7,6 +8,68 @@ class Subscription {
     private string $date_from;
     private string $date_to;
     private int $transaction_id;
+
+    public function __construct(int $id, int $user_id, string $date_from, string $date_to, int $transaction_id) {
+        $this->setId($id);
+        $this->setUserId($user_id);
+        $this->setDateFrom($date_from);
+        $this->setDateTo($date_to);
+        $this->setTransactionId($transaction_id);
+    }
+
+    // SQL Queries
+
+    public static function deleteById(int $id): bool {
+        return DatabaseProvider::query("DELETE FROM subscriptions WHERE `id` = $id;");
+    }
+
+    public static function getAllByUserId(int $id): array {
+        $ret = array();
+        $result = DatabaseProvider::query("SELECT * FROM subscriptions WHERE `user_id` = $id ORDER BY `date_from`;");
+        if ($result->num_row > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $ret[] = new Subscription(
+                    $row['id'],
+                    $row['user_id'],
+                    $row['date_from'],
+                    $row['date_to'],
+                    $row['transaction_id']
+                );
+            }
+        }
+        return $ret;
+    }
+
+    public static function getById(int $id): ?Subscription {
+        $result = DatabaseProvider::query("SELECT * FROM subscriptions WHERE `id` = $id;");
+        if ($result->num_rows == 1) {
+            $row = $result->fetch_assoc();
+            return new Subscription(
+                $row['id'],
+                $row['user_id'],
+                $row['date_from'],
+                $row['date_to'],
+                $row['transaction_id']
+            );
+        }
+        return null;
+    }
+
+    public static function insert(Subscription $sub): bool {
+        return DatabaseProvider::query(
+            "INSERT INTO subscriptions (`id`, `user_id`, `date_from`, `date_to`, `transaction_id`)
+                    VALUES ($sub->id, $sub->user_id, '$sub->date_from', '$sub->date_to', $sub->transaction_id);"
+        );
+    }
+
+    public static function update(Subscription $sub): bool {
+        return DatabaseProvider::query(
+            "UPDATE subscriptions SET `user_id` = $sub->user_id, `date_from` = '$sub->date_from', `date_to` = '$sub->date_to',
+                         `transaction_id` = $sub->transaction_id WHERE `id` = $sub->id;"
+        );
+    }
+
+    // Getters and setters
 
     /**
      * @return string

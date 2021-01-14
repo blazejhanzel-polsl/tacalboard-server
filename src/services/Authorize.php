@@ -33,7 +33,7 @@ class Authorize extends Service {
         $email = $json->email;
         $password = $json->password;
 
-        $result = DatabaseProvider::query('SELECT `password` FROM `users` WHERE email = "$email";');
+        $result = DatabaseProvider::query("SELECT `password` FROM `users` WHERE email = '$email';");
         if ($result->num_rows > 0) {
             if (strcmp(($result->fetch_assoc())['password'], $password) === 0) {
                 // successful login
