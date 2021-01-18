@@ -15,8 +15,8 @@ class Task {
     private int $tasks_list_id;
     private string $title;
 
-    public function __construct(int $id, string $deadline_date, ?string $description, bool $done, int $duration, int $position,
-      int $priority, ?string $reminder_date, ?int $repeating_id, int $tasks_list_id, string $title) {
+    private function __construct(int $id, string $deadline_date, ?string $description, bool $done, int $duration, int $position,
+                                 int $priority, ?string $reminder_date, ?int $repeating_id, int $tasks_list_id, string $title) {
         $this->setId($id);
         $this->setDeadlineDate($deadline_date);
         $this->setDescription($description);
@@ -30,10 +30,38 @@ class Task {
         $this->setTitle($title);
     }
 
+    public static function create(string $deadline_date, ?string $description, bool $done, int $duration, int $position,
+                                  int $priority, ?string $reminder_date, ?int $repeating_id, int $tasks_list_id, string $title): Task {
+        return new Task(null, $deadline_date, $description, $done, $duration, $position, $priority, $reminder_date, $repeating_id, $tasks_list_id, $title);
+    }
+
     // SQL Queries
 
     public static function deleteById(int $id): bool {
         return DatabaseProvider::query("DELETE FROM tasks WHERE `id` = $id;");
+    }
+
+    public static function getAllByTasksListId(int $id): array {
+        $ret = array();
+        $result = DatabaseProvider::query("SELECT * FROM tasks WHERE `tasks_list_id` = $id ORDER BY `position`;");
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $ret[] = new Task(
+                    $row['id'],
+                    $row['deadline_date'],
+                    $row['description'],
+                    $row['done'],
+                    $row['duration'],
+                    $row['position'],
+                    $row['priority'],
+                    $row['reminder_date'],
+                    $row['repeating_id'],
+                    $row['tasks_list_id'],
+                    $row['title']
+                );
+            }
+        }
+        return $ret;
     }
 
     public static function getById(int $id): ?Task {
@@ -65,6 +93,29 @@ class Task {
                            $task->position, $task->priority, '$task->reminder_date', $task->repeating_id,
                            $task->tasks_list_id, '$task->title');"
         );
+    }
+
+    public static function movePosition(Task $task, int $direction): bool {
+        if ($direction != 0) {
+            $objs = Task::getAllByTasksListId($task->tasks_list_id);
+
+            foreach ($objs as $obj) {
+                if ($obj->position = ($task->position + $direction)) {
+                    $obj->position = $task->position;
+                    $task->position = $task->position + $direction;
+                    try {
+                        DatabaseProvider::transactionBegin();
+                        Task::update($obj);
+                        Task::update($task);
+                        DatabaseProvider::transactionEnd();
+                    } catch (Exception $e) {
+                        return false;
+                    }
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public static function update(Task $task): bool {
@@ -186,6 +237,9 @@ class Task {
      * @param int $duration
      */
     public function setDuration(int $duration): void {
+        if ($duration < 0) {
+            $duration = 0;
+        }
         $this->duration = $duration;
     }
 
@@ -206,8 +260,12 @@ class Task {
     /**
      * @param int $priority
      */
-    public function setPriority(int $priority): void {
-        $this->priority = $priority;
+    public function setPriority(int $priority): bool {
+        if ($priority >= 0 && $priority <= 3) {
+            $this->priority = $priority;
+            return true;
+        }
+        return false;
     }
 
     /**

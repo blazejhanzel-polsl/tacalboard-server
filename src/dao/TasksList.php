@@ -1,16 +1,18 @@
 <?php
 require_once __DIR__ . '/../DatabaseProvider.php';
+require_once __DIR__ . '/TasksList/Predefinition.php';
 
+use TasksList\Predefinition;
 
 class TasksList {
-    private int $id;
+    private ?int $id = null;
     private int $project_id;
     private string $name;
     private string $icon;
     private int $position;
     private bool $predefined;
 
-    public function __construct(int $id, int $project_id, string $name, string $icon, int $position, bool $predefined) {
+    private function __construct(int $id, int $project_id, string $name, string $icon, int $position, bool $predefined) {
         $this->setId($id);
         $this->setProjectId($project_id);
         $this->setName($name);
@@ -19,15 +21,28 @@ class TasksList {
         $this->setPredefined($predefined);
     }
 
+    public static function create(int $project_id, string $name, string $icon, int $position, bool $predefined) {
+        return new TasksList(null, $project_id, $name, $icon, $position, $predefined);
+    }
+
     // SQL Queries
 
     public static function deleteById(int $id): bool {
         return DatabaseProvider::query("DELETE FROM tasks_lists WHERE `id` = $id;");
     }
 
-    public static function getAllByProjectId(int $id): array {
+    public static function getAllByProjectId(int $id, Predefinition $p): array {
         $ret = array();
-        $result = DatabaseProvider::query("SELECT * FROM tasks_lists WHERE `project_id` = $id;");
+        $sql = "SELECT * FROM tasks_lists WHERE `project_id` = $id";
+        if ($p->equals(Predefinition::ONLY_PREDEFINED())) {
+            $sql .= ", `predefined` = true;";
+        } else if ($p->equals(Predefinition::ONLY_USER_DEFINED())) {
+            $sql .= ", `predefined` = false;";
+        } else if ($p->equals(Predefinition::ALL())) {
+            $sql .= ";";
+        }
+
+        $result = DatabaseProvider::query($sql);
         if ($result->num_row > 0) {
             while ($row = $result->fetch_assoc()) {
                 $ret[] = new TasksList(
@@ -62,14 +77,37 @@ class TasksList {
     public static function insert(TasksList $tl): bool {
         return DatabaseProvider::query(
             "INSERT INTO tasks_lists (`id`, `project_id`, `name`, `icon`, `position`, `predefined`)
-                    VALUES ($tl->id, $tl->project_id, '$tl->name', '$tl->icon', $tl->position, $tl->predefined);"
+                VALUES ($tl->id, $tl->project_id, '$tl->name', '$tl->icon', $tl->position, $tl->predefined);"
         );
+    }
+
+    public static function movePosition(TasksList $tl, int $direction): bool {
+        if ($direction != 0) {
+            $objs = TasksList::getAllByProjectId($tl->project_id, Predefinition::ONLY_USER_DEFINED());
+
+            foreach ($objs as $obj) {
+                if ($obj->position = ($tl->position + $direction)) {
+                    $obj->position = $tl->position;
+                    $tl->position = $tl->position + $direction;
+                    try {
+                        DatabaseProvider::transactionBegin();
+                        TasksList::update($obj);
+                        TasksList::update($tl);
+                        DatabaseProvider::transactionEnd();
+                    } catch (Exception $e) {
+                        return false;
+                    }
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public static function update(TasksList $tl): bool {
         return DatabaseProvider::query(
             "UPDATE tasks_lists SET `project_id` = $tl->project_id, `name` = '$tl->name', `icon` = '$tl->icon',
-                       `position` = $tl->position, `predefined` = $tl->predefined WHERE `id` = $tl->id;"
+                   `position` = $tl->position, `predefined` = $tl->predefined WHERE `id` = $tl->id;"
         );
     }
 

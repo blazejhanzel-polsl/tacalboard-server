@@ -3,6 +3,7 @@
 class DatabaseProvider {
     private static self $instance;
     private object $connection;
+    private static bool $transaction = false;
 
     private function __construct() {
         define('DB_SERVER', 'localhost');
@@ -31,6 +32,30 @@ class DatabaseProvider {
 
     public static function query($sql) {
         self::checkInstance();
+
+        if (self::$transaction) {
+            try {
+                return self::$instance->connection->query($sql);
+            } catch (mysqli_sql_exception $exception) {
+                self::$instance->connection->rollback();
+                throw $exception;
+            }
+        }
         return self::$instance->connection->query($sql);
+    }
+
+    public static function transactionBegin() {
+        self::$transaction = true;
+        self::$instance->connection->begin_trancastion();
+    }
+
+    public static function transactionEnd() {
+        self::$transaction = false;
+        try {
+            self::$instance->connection->commit();
+        } catch (mysqli_sql_exception $exception) {
+            self::$instance->connection->rollback();
+            throw $exception;
+        }
     }
 }

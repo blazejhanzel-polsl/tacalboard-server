@@ -4,18 +4,22 @@ require_once __DIR__ . '/../datatypes/ErrorReturn.php';
 
 
 class Tag {
-    private int $id;
+    private ?int $id = null;
     private int $project_id;
     private string $icon;
     private string $name;
     private int $position;
 
-    public function __construct(int $id, int $project_id, string $icon, string $name, int $position) {
+    private function __construct(int $id, int $project_id, string $icon, string $name, int $position) {
         $this->setId($id);
         $this->setProjectId($project_id);
         $this->setIcon($icon);
         $this->setName($name);
         $this->setPosition($position);
+    }
+
+    public static function create(int $project_id, string $icon, string $name, int $position): Tag {
+        return new Tag(null, $project_id, $icon, $name, $position);
     }
 
     // SQL Queries
@@ -27,7 +31,7 @@ class Tag {
     public static function getAllByProjectId(int $project_id): array {
         $ret = array();
         $result = DatabaseProvider::query("SELECT * FROM tags WHERE `project_id` = $project_id ORDER BY `position`;");
-        if ($result->num_row > 0) {
+        if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 $ret[] = new Tag(
                     $row['id'],
@@ -62,6 +66,29 @@ class Tag {
             "INSERT INTO tags (`id`, `project_id`, `icon`, `name`, `position`)".
             "VALUES ($tag->id, $tag->project_id, '$tag->icon', '$tag->name', $tag->position);"
         );
+    }
+
+    public static function movePosition(Tag $tag, int $direction): bool {
+        if ($direction != 0) {
+            $objs = Tag::getAllByProjectId($tag->project_id);
+
+            foreach ($objs as $obj) {
+                if ($obj->position = ($tag->position + $direction)) {
+                    $obj->position = $tag->position;
+                    $tag->position = $tag->position + $direction;
+                    try {
+                        DatabaseProvider::transactionBegin();
+                        Tag::update($obj);
+                        Tag::update($tag);
+                        DatabaseProvider::transactionEnd();
+                    } catch (Exception $e) {
+                        return false;
+                    }
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public static function update(Tag $tag): bool {
