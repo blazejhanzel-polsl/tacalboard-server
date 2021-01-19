@@ -1,24 +1,24 @@
 <?php
 
 
-class ErrorReturn {
-    private string $type = "general-error";
-    private string $title = "General error";
-    private int $status = 400;
-    private string $detail = "Unknown error has occurred. None details specified.";
-    private string $instance = "unknown";
+class ReturnCode {
+    protected string $type = "general-error";
+    protected string $title = "General error";
+    protected int $status = 500;
+    protected string $detail = "None details specified.";
+    protected string $instance = "unknown";
 
     /**
-     * ErrorReturn constructor.
+     * ReturnCode constructor.
      * @param string $type
      * @param string $title
      * @param int $status
      * @param string $detail
      */
-    public function __construct(string $type, string $title, int $status, string $detail) {
+    public function __construct(int $status, string $type, string $title, string $detail) {
+        $this->setStatus($status);
         $this->setType($type);
         $this->setTitle($title);
-        $this->setStatus($status);
         $this->setDetail($detail);
         $this->setInstance($_SERVER['REQUEST_URI']);
     }
@@ -26,7 +26,7 @@ class ErrorReturn {
     /**
      * @return string
      */
-    public function __toString(): string {
+    final public function __toString(): string {
         $json = array(
             'type' => $this->type,
             'title' => $this->title,
@@ -43,35 +43,35 @@ class ErrorReturn {
     /**
      * @param string $detail
      */
-    public function setDetail(string $detail): void {
+    final public function setDetail(string $detail): void {
         $this->detail = $detail;
     }
 
     /**
      * @param string $instance
      */
-    public function setInstance(string $instance): void {
+    final public function setInstance(string $instance): void {
         $this->instance = $instance;
     }
 
     /**
      * @param int $status
      */
-    public function setStatus(int $status): void {
+    final public function setStatus(int $status): void {
         $this->status = $status;
     }
 
     /**
      * @param string $title
      */
-    public function setTitle(string $title): void {
+    final public function setTitle(string $title): void {
         $this->title = $title;
     }
 
     /**
      * @param string $type
      */
-    public function setType(string $type): void {
+    final public function setType(string $type): void {
         $this->type = $type;
     }
 }

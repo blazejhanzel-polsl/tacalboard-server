@@ -1,7 +1,10 @@
 <?php
 session_start();
 
+require_once __DIR__ . '/datatypes/ReturnCodes.php';
 require_once __DIR__ . '/services/Authorize.php';
+require_once __DIR__ . '/services/Projects.php';
+require_once __DIR__ . '/services/Tasks.php';
 
 class ServiceHandler {
     private static self $instance;
@@ -21,13 +24,25 @@ class ServiceHandler {
 
         if (count($request) > 0) {
             switch ($request[1]) {
-                default:
+                default: {
+                    echo new ReturnCode\MethodNotAllowed();
                     break;
+                }
 
                 // api path defining starts here
 
                 case 'authorize': {
-                    (new Authorize())->proceed();
+                    (new Authorize())->proceed(array_slice($request, 2));
+                    break;
+                }
+
+                case 'projects': {
+                    (new Projects())->proceed((array_slice($request, 2)));
+                    break;
+                }
+
+                case 'tasks': {
+                    (new Tasks())->proceed(array_slice($request, 2));
                     break;
                 }
             }

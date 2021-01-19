@@ -1,30 +1,25 @@
 <?php
 require_once __DIR__ . '/../DatabaseProvider.php';
-require_once __DIR__ . '/../datatypes/ErrorReturn.php';
+require_once __DIR__ . '/../datatypes/ReturnCodes.php';
 require_once __DIR__ . '/../datatypes/Service.php';
 
 
 class Authorize extends Service {
 
     protected function doDelete(): void {
-        if (isset($_SESSION['login'])) {
-            unset($_SESSION['login']);
+        if (isset($_SESSION['user_id'])) {
+            unset($_SESSION['user_id']);
             session_destroy();
         }
     }
 
     protected function doGet(): void {
-        if (isset($_SESSION['login'])) {
+        if (isset($_SESSION['user_id'])) {
             echo json_encode(array(
-                'email' => $_SESSION['login']
+                'email' => $_SESSION['user_id']
             ));
         } else {
-            echo new ErrorReturn(
-                'authorization-not-logged',
-                'User not logged in',
-                401,
-                'None user is currently logged in. Log in using POST request.'
-            );
+            echo new ReturnCode\AuthorizationNotLogged();
         }
     }
 
@@ -33,28 +28,19 @@ class Authorize extends Service {
         $email = $json->email;
         $password = $json->password;
 
-        $result = DatabaseProvider::query("SELECT `password` FROM `users` WHERE email = '$email';");
+        $result = DatabaseProvider::query("SELECT `id`, `password` FROM `users` WHERE email = '$email';");
         if ($result->num_rows > 0) {
-            if (strcmp(($result->fetch_assoc())['password'], $password) === 0) {
+            $row = $result->fetch_assoc();
+            if (strcmp($row['password'], $password) === 0) {
                 // successful login
-                $_SESSION['login'] = $email;
+                $_SESSION['user_id'] = $row['id'];
             }
             else {
-                echo (new ErrorReturn(
-                    "authorization-wrong-password",
-                    "Wrong password",
-                    401,
-                    "Authorization failed. Wrong password."
-                ));
+                echo new ReturnCode\DataNotEqual();
             }
         }
         else {
-            echo (new ErrorReturn(
-                "authorization-user-doesnt-exist",
-                "User doesn't exist",
-                401,
-                "Authorization failed. User with specified e-mail doesn't exist."
-            ));
+            echo new ReturnCode\NotFound();
         }
     }
 }

@@ -25,7 +25,7 @@ Creates new project with provided informations.
 ```
 
 ### Returns
-- **201**
+- **201** created
 - **400** insufficient-content
 - **401** authorization-not-logged
 
@@ -40,7 +40,7 @@ Updates project indatabse using provided data.
 ```
 
 ### Returns
-- **204**
+- **200**
 - **400** insufficient-content
 - **401** authorization-not-logged
 - **403** insufficient-privileges
@@ -66,7 +66,7 @@ Provide informations about selected project
 Deletes selected project if currently logged user is an owner.
 
 ### Returns
-- **204**
+- **200**
 - **401** authorization-not-logged
 - **403** insufficient-privileges
 - **404** not-found
@@ -95,7 +95,7 @@ Adds new task list into provided project using data provided in json body.
 ```
 
 ### Returns 
-- **201**
+- **201** created
 - **400** insufficient-content
 - **401** authorization-not-logged
 - **404** not-found
@@ -183,8 +183,7 @@ Registers new user with provided info.
 ### Returns
 - **200**
 - **400** insufficient-content
-- **409** email-already-used
-- **422** password-too-weak
+- **409** unique-already-used
 
 
 ## PUT
@@ -199,7 +198,7 @@ Change user credentials after checking if password in provided json is valid wit
 
 ### Returns
 - **200**
-- **409** wrong-password
+- **401** authorization-rejected
 
 ## PATCH
 Change users password if old is valid with saved in database.
@@ -212,8 +211,8 @@ Change users password if old is valid with saved in database.
 
 ### Returns 
 - **200**
-- **409** wrong-passworg
-- **422** password-too-weak
+- **400** insufficient-content
+- **401** authorization-rejected
 
 # /users/{id}/confirm/{key}
 
@@ -222,7 +221,7 @@ Confirm registration of users specified in {id} if {key} is valid with key in da
 
 ### Returns
 - **200**
-- **409** bad-confirmation-key
+- **409** data-not-equal
 
 # /users/authorize
 
@@ -252,8 +251,8 @@ Needs formatted json to proceed.
 ```
 
 ### Returns
-- **401** authorization-user-doesnt-exist
 - **401** authorization-wrong-password
+- **404** not-found
 
 ## DELETE
 Ends session and logout currently logged user.

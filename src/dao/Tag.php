@@ -1,6 +1,5 @@
 <?php
 require_once __DIR__ . '/../DatabaseProvider.php';
-require_once __DIR__ . '/../datatypes/ErrorReturn.php';
 
 
 class Tag {
