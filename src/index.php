@@ -32,17 +32,17 @@ class ServiceHandler {
                 // api path defining starts here
 
                 case 'authorize': {
-                    (new Authorize())->proceed(array_slice($request, 2));
+                    (new Authorize())->proceed(array_slice($request, 1));
                     break;
                 }
 
                 case 'projects': {
-                    (new Projects())->proceed((array_slice($request, 2)));
+                    (new Projects())->proceed((array_slice($request, 1)));
                     break;
                 }
 
                 case 'tasks': {
-                    (new Tasks())->proceed(array_slice($request, 2));
+                    (new Tasks())->proceed(array_slice($request, 1));
                     break;
                 }
             }
@@ -51,6 +51,6 @@ class ServiceHandler {
 }
 
 // startup methods
-header('Content-Type: application/json');
+header('Content-Type: application/json;charset=utf-8');
 ServiceHandler::checkInstance();
 ServiceHandler::main();

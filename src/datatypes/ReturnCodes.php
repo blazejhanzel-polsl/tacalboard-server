@@ -39,6 +39,17 @@ class Created extends ReturnCode {
     }
 }
 
+class DatabaseQueryError extends ReturnCode {
+    public function __construct() {
+        parent::__construct(
+            500,
+            "database-query-error",
+            "Internal Server Error",
+            "Server encountered a problem in communication with database."
+        );
+    }
+}
+
 class DataNotEqual extends ReturnCode {
     public function __construct() {
         parent::__construct(
@@ -79,6 +90,17 @@ class MethodNotAllowed extends ReturnCode {
             "method-not-allowed",
             "Method Not Allowed",
             "This endpoint doesn't provide functionality."
+        );
+    }
+}
+
+class NoContent extends ReturnCode {
+    public function __construct() {
+        parent::__construct(
+            204,
+            "no-content",
+            "No Content",
+            "Request proceed with success. No content provided."
         );
     }
 }

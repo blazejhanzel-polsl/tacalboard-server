@@ -28,6 +28,7 @@ class DatabaseProvider {
             echo "Failed to connect to MySQL: " . $this->connection->connect_error;
             exit();
         }
+        $this->connection->set_charset("utf8");
     }
 
     public static function query($sql) {
@@ -46,7 +47,7 @@ class DatabaseProvider {
 
     public static function transactionBegin() {
         self::$transaction = true;
-        self::$instance->connection->begin_trancastion();
+        self::$instance->connection->begin_transaction();
     }
 
     public static function transactionEnd() {

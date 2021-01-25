@@ -4,9 +4,15 @@
 abstract class Service {
     protected array $args;
 
-    protected function doDelete(): void {}
-    protected function doPut(): void {}
-    protected function doPatch(): void {}
+    protected function doDelete(): void {
+        echo new ReturnCode\MethodNotAllowed();
+    }
+    protected function doPut(): void {
+        echo new ReturnCode\MethodNotAllowed();
+    }
+    protected function doPatch(): void {
+        echo new ReturnCode\MethodNotAllowed();
+    }
 
     abstract protected function doGet(): void;
     abstract protected function doPost(): void;

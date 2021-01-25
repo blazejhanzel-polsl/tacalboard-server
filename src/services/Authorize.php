@@ -16,7 +16,7 @@ class Authorize extends Service {
     protected function doGet(): void {
         if (isset($_SESSION['user_id'])) {
             echo json_encode(array(
-                'email' => $_SESSION['user_id']
+                'id' => (int) $_SESSION['user_id']
             ));
         } else {
             echo new ReturnCode\AuthorizationNotLogged();

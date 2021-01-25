@@ -3,16 +3,20 @@ require_once __DIR__ . '/../DatabaseProvider.php';
 
 
 class Project {
-    private int $id;
+    private ?int $id;
     private int $team_id;
     private string $name;
-    private int $position;
+    private ?int $position;
 
-    public function __construct(int $id, int $team_id, string $name, int $position) {
+    private function __construct(?int $id, int $team_id, string $name, ?int $position) {
         $this->setId($id);
         $this->setTeamId($team_id);
         $this->setName($name);
         $this->setPosition($position);
+    }
+
+    public static function create(int $team_id, string $name, int $position = null): Project {
+        return new Project(null, $team_id, $name, $position);
     }
 
     // SQL Queries
@@ -24,7 +28,26 @@ class Project {
     public static function getAllByTeamId(int $team_id): array {
         $ret = array();
         $result = DatabaseProvider::query("SELECT * FROM projects WHERE `team_id` = $team_id ORDER BY `position`");
-        if ($result->num_row > 0) {
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $ret[] = new Project(
+                    $row['id'],
+                    $row['team_id'],
+                    $row['name'],
+                    $row['position']
+                );
+            }
+        }
+        return $ret;
+    }
+
+    public static function getAllByUserId(int $id): array {
+        $ret = array();
+        $result = DatabaseProvider::query(
+            "SELECT p.* FROM projects p JOIN users_in_teams uit on p.team_id = uit.team_id
+                    WHERE uit.user_id = $id ORDER BY p.position;"
+        );
+        if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 $ret[] = new Project(
                     $row['id'],
@@ -52,10 +75,13 @@ class Project {
     }
 
     public static function insert(Project $proj): bool {
-        return DatabaseProvider::query(
-            "INSERT INTO projects (`id`, `team_id`, `name`, `position`) VALUES ($proj->id, $proj->team_id,
-                                                                   '$proj->name', $proj->position);"
+        DatabaseProvider::transactionBegin();
+        $position = 1000 + DatabaseProvider::query("SELECT MAX(position) as max FROM projects WHERE team_id = $proj->team_id;")->fetch_assoc()['max'];
+        $return = DatabaseProvider::query(
+            "INSERT INTO projects (team_id, name, position) VALUES ($proj->team_id, '$proj->name', $position);"
         );
+        DatabaseProvider::transactionEnd();
+        return $return;
     }
 
     public static function update(Project $proj): bool {
@@ -95,9 +121,9 @@ class Project {
     }
 
     /**
-     * @param int $id
+     * @param int|null $id
      */
-    public function setId(int $id): void {
+    public function setId(?int $id): void {
         $this->id = $id;
     }
 
@@ -109,9 +135,9 @@ class Project {
     }
 
     /**
-     * @param int $position
+     * @param int|null $position
      */
-    public function setPosition(int $position): void {
+    public function setPosition(?int $position): void {
         $this->position = $position;
     }
 

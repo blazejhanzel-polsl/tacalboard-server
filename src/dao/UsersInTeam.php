@@ -51,6 +51,26 @@ class UsersInTeam {
         return null;
     }
 
+    public static function getUserRoleByProjectId(int $user_id, int $project_id): string {
+        $result = DatabaseProvider::query("SELECT role FROM users_in_teams uit JOIN projects p ON uit.team_id = p.team_id WHERE uit.user_id = $user_id AND p.id = $project_id;");
+        if ($result->num_rows == 1) {
+            $row = $result->fetch_assoc();
+            return $row['role'];
+        } else {
+            return "none";
+        }
+    }
+
+    public static function getUserRoleByTeamId(int $user_id, int $team_id): string {
+        $result = DatabaseProvider::query("SELECT role FROM users_in_teams WHERE user_id = $user_id AND team_id = $team_id;");
+        if ($result->num_rows == 1) {
+            $row = $result->fetch_assoc();
+            return $row['role'];
+        } else {
+            return "none";
+        }
+    }
+
     public static function insert(UsersInTeam $uit): bool {
         return DatabaseProvider::query(
             "INSERT INTO users_in_teams (`id`, `user_id`, `team_id`, `role`)

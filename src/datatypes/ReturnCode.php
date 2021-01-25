@@ -2,10 +2,10 @@
 
 
 class ReturnCode {
-    protected string $type = "general-error";
-    protected string $title = "General error";
-    protected int $status = 500;
-    protected string $detail = "None details specified.";
+    protected string $type = "ok";
+    protected string $title = "OK";
+    protected int $status = 200;
+    protected string $detail = "Request proceed with success.";
     protected string $instance = "unknown";
 
     /**
@@ -37,6 +37,7 @@ class ReturnCode {
 
         http_response_code($this->status);
 
+        if ($this->status == 204) return "";
         return json_encode($json);
     }
 
