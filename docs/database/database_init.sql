@@ -23,7 +23,8 @@ DROP TABLE IF EXISTS users;
 CREATE TABLE users (
     id INT NOT NULL AUTO_INCREMENT,
     email VARCHAR(32) NOT NULL,
-    password VARCHAR(40) NOT NULL,
+    password CHAR(40) NOT NULL,
+    confirmation_key CHAR(32) NOT NULL,
     PRIMARY KEY (id)
 ) ENGINE = INNODB;
 
