@@ -1,118 +1,30 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<diagram program="umlet" version="14.3.0">
-  <zoom_level>8</zoom_level>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>168</x>
-      <y>608</y>
-      <w>184</w>
-      <h>72</h>
-    </coordinates>
-    <panel_attributes>users
+<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>241</x><y>660</y><w>230</w><h>90</h></coordinates><panel_attributes>users
 --
 *id: int &lt;&lt;not null&gt;&gt; &lt;&lt;primary key&gt;&gt;*
 email: varchar(32) &lt;&lt;not null&gt;&gt;
 password: varchar(40) &lt;&lt;not null&gt;&gt;
 
-bg=red</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>144</x>
-      <y>416</y>
-      <w>232</w>
-      <h>104</h>
-    </coordinates>
-    <panel_attributes>subscriptions
+bg=red</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>211</x><y>420</y><w>290</w><h>130</h></coordinates><panel_attributes>subscriptions
 --
 *id: int &lt;&lt;not null&gt;&gt;*
 _user_id: int &lt;&lt;not null&gt;&gt; &lt;&lt;foreign key&gt;&gt;_
 date_from: timestamp &lt;&lt;not null&gt;&gt;
 date_to: timestamp &lt;&lt;not null&gt;&gt;
 _transaction_id: int &lt;&lt;not null&gt;&gt; &lt;&lt;foreign key&gt;&gt;_
-bg=red</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>256</x>
-      <y>512</y>
-      <w>32</w>
-      <h>112</h>
-    </coordinates>
-    <panel_attributes>lt=-
+bg=red</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>351</x><y>540</y><w>40</w><h>140</h></coordinates><panel_attributes>lt=-
 m1=1
-m2=n</panel_attributes>
-    <additional_attributes>10.0;120.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>480</x>
-      <y>648</y>
-      <w>24</w>
-      <h>96</h>
-    </coordinates>
-    <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;100.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>344</x>
-      <y>648</y>
-      <w>296</w>
-      <h>32</h>
-    </coordinates>
-    <panel_attributes>m1=n
-m2=n</panel_attributes>
-    <additional_attributes>10.0;10.0;350.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>384</x>
-      <y>728</y>
-      <w>208</w>
-      <h>88</h>
-    </coordinates>
-    <panel_attributes>users_in_teams
+m2=n</panel_attributes><additional_attributes>10;120;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>631</x><y>710</y><w>30</w><h>120</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;100;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>461</x><y>710</y><w>370</w><h>40</h></coordinates><panel_attributes>m1=n
+m2=n</panel_attributes><additional_attributes>10;10;350;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>511</x><y>810</y><w>260</w><h>110</h></coordinates><panel_attributes>users_in_teams
 --
 *id: int &lt;&lt;not null&gt;&gt; &lt;&lt;primary key&gt;&gt;*
 _user_id: int &lt;&lt;not null&gt;&gt; &lt;&lt;foreign key&gt;&gt;_
 _team_id: int &lt;&lt;not null&gt;&gt; &lt;&lt;foreign key&gt;&gt;_
 role: ("owner", "member") &lt;&lt;not null&gt;&gt; 
-bg=red</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>624</x>
-      <y>608</y>
-      <w>184</w>
-      <h>64</h>
-    </coordinates>
-    <panel_attributes>teams
+bg=red</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>811</x><y>660</y><w>230</w><h>80</h></coordinates><panel_attributes>teams
 --
 *id: int &lt;&lt;not null&gt;&gt; &lt;&lt;primary key&gt;&gt;*
 name: varchar(32) &lt;&lt;not null&gt;&gt;
-bg=red</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>520</x>
-      <y>416</y>
-      <w>344</w>
-      <h>112</h>
-    </coordinates>
-    <panel_attributes>transactions
+bg=red</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>681</x><y>420</y><w>430</w><h>140</h></coordinates><panel_attributes>transactions
 --
 *id: int &lt;&lt;not null&gt;&gt; &lt;&lt;primary key&gt;&gt;*
 _user_id: int &lt;&lt;not null&gt;&gt; &lt;&lt;foreign key&gt;&gt;_
@@ -120,59 +32,15 @@ transaction_date: timestamp &lt;&lt;not null&gt;&gt;
 amount_paid: decimal(6,2) &lt;&lt;not null&gt;&gt;
 transaction_currency: char(3)
 transaction_status: ("correct","cancelled","in progress") &lt;&lt;not null&gt;&gt;
-bg=red</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>368</x>
-      <y>440</y>
-      <w>168</w>
-      <h>32</h>
-    </coordinates>
-    <panel_attributes>lt=-&gt;
-m2=1</panel_attributes>
-    <additional_attributes>10.0;10.0;190.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>344</x>
-      <y>520</y>
-      <w>264</w>
-      <h>136</h>
-    </coordinates>
-    <panel_attributes>lt=-
+bg=red</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>491</x><y>450</y><w>210</w><h>40</h></coordinates><panel_attributes>lt=-&gt;
+m2=1</panel_attributes><additional_attributes>10;10;190;10</additional_attributes></element><element><id>Relation</id><coordinates><x>461</x><y>550</y><w>330</w><h>170</h></coordinates><panel_attributes>lt=-
 m1=1
-m2=n</panel_attributes>
-    <additional_attributes>10.0;140.0;300.0;140.0;300.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1008</x>
-      <y>608</y>
-      <w>200</w>
-      <h>88</h>
-    </coordinates>
-    <panel_attributes>projects
+m2=n</panel_attributes><additional_attributes>10;140;300;140;300;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1291</x><y>660</y><w>250</w><h>110</h></coordinates><panel_attributes>projects
 --
 *id: int &lt;&lt;not null&gt;&gt; &lt;&lt;primary key&gt;&gt;*
 _team_id: int &lt;&lt;not null&gt;&gt; &lt;foreign key&gt;&gt;_
 name: varchar(32) &lt;&lt;not null&gt;&gt;
-position: int &lt;&lt;not null&gt;&gt;</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1008</x>
-      <y>984</y>
-      <w>200</w>
-      <h>112</h>
-    </coordinates>
-    <panel_attributes>tasks_lists
+position: int &lt;&lt;not null&gt;&gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1291</x><y>1130</y><w>250</w><h>140</h></coordinates><panel_attributes>tasks_lists
 --
 *id: int &lt;&lt;not null&gt;&gt; &lt;&lt;primary key&gt;&gt;*
 _project_id: int &lt;&lt;not null&gt;&gt; &lt;&lt;foreign key&gt;&gt;_
@@ -180,31 +48,9 @@ name: varchar(32) &lt;&lt;not null&gt;&gt;
 icon: varchar(32) &lt;&lt;not null&gt;&gt;
 position: int &lt;&lt;not null&gt;&gt;
 predefined: boolean &lt;&lt;not null&gt;&gt;
-bg=green</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1104</x>
-      <y>688</y>
-      <w>32</w>
-      <h>312</h>
-    </coordinates>
-    <panel_attributes>lt=-
+bg=green</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1411</x><y>760</y><w>40</w><h>390</h></coordinates><panel_attributes>lt=-
 m1=1
-m2=n</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;370.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>664</x>
-      <y>1040</y>
-      <w>216</w>
-      <h>176</h>
-    </coordinates>
-    <panel_attributes>tasks
+m2=n</panel_attributes><additional_attributes>10;10;10;370</additional_attributes></element><element><id>UMLClass</id><coordinates><x>861</x><y>1200</y><w>270</w><h>220</h></coordinates><panel_attributes>tasks
 --
 *id: int &lt;&lt;not null&gt;&gt; &lt;&lt;primary key&gt;&gt;*
 deadline_date: timestamp
@@ -217,114 +63,26 @@ reminder_date: timestamp
 _repeating_id: int &lt;&lt;foreign key&gt;&gt;_
 _tasks_list_id: int &lt;&lt;not null&gt;&gt; &lt;&lt;foreign key&gt;&gt;_
 title: varchar(128) &lt;&lt;not null&gt;&gt;
-bg=green</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>872</x>
-      <y>1088</y>
-      <w>256</w>
-      <h>112</h>
-    </coordinates>
-    <panel_attributes>lt=-
+bg=green</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1121</x><y>1260</y><w>320</w><h>140</h></coordinates><panel_attributes>lt=-
 m1=1
-m2=n</panel_attributes>
-    <additional_attributes>290.0;10.0;290.0;110.0;10.0;110.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>800</x>
-      <y>632</y>
-      <w>224</w>
-      <h>32</h>
-    </coordinates>
-    <panel_attributes>lt=-
+m2=n</panel_attributes><additional_attributes>290;10;290;110;10;110</additional_attributes></element><element><id>Relation</id><coordinates><x>1031</x><y>690</y><w>280</w><h>40</h></coordinates><panel_attributes>lt=-
 m1=1
-m2=n</panel_attributes>
-    <additional_attributes>10.0;10.0;260.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>768</x>
-      <y>728</y>
-      <w>208</w>
-      <h>104</h>
-    </coordinates>
-    <panel_attributes>tags
+m2=n</panel_attributes><additional_attributes>10;10;260;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>991</x><y>810</y><w>260</w><h>130</h></coordinates><panel_attributes>tags
 --
 *id: int &lt;&lt;not null&gt;&gt; &lt;&lt;primary key&gt;&gt;*
 _project_id: int &lt;&lt;not null&gt;&gt; &lt;&lt;foreign key&gt;&gt;_
 icon: varchar(32) &lt;&lt;not null&gt;&gt;
 name: varchar(32) &lt;&lt;not null&gt;&gt;
-position: int &lt;&lt;not null&gt;&gt;</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>968</x>
-      <y>688</y>
-      <w>104</w>
-      <h>96</h>
-    </coordinates>
-    <panel_attributes>lt=-
+position: int &lt;&lt;not null&gt;&gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1241</x><y>760</y><w>130</w><h>120</h></coordinates><panel_attributes>lt=-
 m1=1
-m2=n</panel_attributes>
-    <additional_attributes>100.0;10.0;100.0;90.0;10.0;90.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>808</x>
-      <y>824</y>
-      <w>32</w>
-      <h>232</h>
-    </coordinates>
-    <panel_attributes>lt=-
+m2=n</panel_attributes><additional_attributes>100;10;100;90;10;90</additional_attributes></element><element><id>Relation</id><coordinates><x>1041</x><y>930</y><w>40</w><h>290</h></coordinates><panel_attributes>lt=-
 m1=n
-m2=n</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;270.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>496</x>
-      <y>864</y>
-      <w>192</w>
-      <h>72</h>
-    </coordinates>
-    <panel_attributes>tags_in_tasks
+m2=n</panel_attributes><additional_attributes>10;10;10;270</additional_attributes></element><element><id>UMLClass</id><coordinates><x>651</x><y>980</y><w>240</w><h>90</h></coordinates><panel_attributes>tags_in_tasks
 --
 *id: int &lt;&lt;not null&gt;&gt; &lt;&lt;primary key&gt;&gt;*
 _tag_id: int &lt;&lt;not null&gt;&gt; &lt;&lt;foreign key&gt;&gt;_
 _task_id: int &lt;&lt;not null&gt;&gt; &lt;&lt;foreign key&gt;&gt;_
-bg=green</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>680</x>
-      <y>896</y>
-      <w>152</w>
-      <h>24</h>
-    </coordinates>
-    <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>170.0;10.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1208</x>
-      <y>792</y>
-      <w>192</w>
-      <h>160</h>
-    </coordinates>
-    <panel_attributes>repeatings
+bg=green</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>881</x><y>1020</y><w>190</w><h>30</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>170;10;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1541</x><y>890</y><w>240</w><h>200</h></coordinates><panel_attributes>repeatings
 --
 *id: int &lt;&lt;not null&gt;&gt; &lt;&lt;primary key&gt;&gt;*
 monday: boolean &lt;&lt;not null&gt;&gt;
@@ -335,61 +93,17 @@ friday: boolean &lt;&lt;not null&gt;&gt;
 saturday: boolean &lt;&lt;not null&gt;&gt;
 sunday: boolean &lt;&lt;not null&gt;&gt;
 step: int &lt;&lt;not null&gt;&gt;
-end_date: timestamp</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>848</x>
-      <y>872</y>
-      <w>376</w>
-      <h>184</h>
-    </coordinates>
-    <panel_attributes>lt=-&gt;
-m2=1</panel_attributes>
-    <additional_attributes>10.0;210.0;10.0;10.0;450.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1008</x>
-      <y>408</y>
-      <w>200</w>
-      <h>96</h>
-    </coordinates>
-    <panel_attributes>calendars
+end_date: timestamp</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1091</x><y>990</y><w>470</w><h>230</h></coordinates><panel_attributes>lt=-&gt;
+m2=1</panel_attributes><additional_attributes>10;210;10;10;450;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1291</x><y>410</y><w>250</w><h>120</h></coordinates><panel_attributes>calendars
 --
 *id: int &lt;&lt;not null&gt;&gt; &lt;&lt;primary key&gt;&gt;*
 _project_id: int &lt;&lt;not null&gt;&gt; &lt;&lt;foreign key&gt;&gt;_
 name: varchar(32) &lt;&lt;not null&gt;&gt;
 icon: varchar(32) &lt;&lt;not null&gt;&gt;
 position: int &lt;&lt;not null&gt;&gt;
-bg=orange</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1104</x>
-      <y>496</y>
-      <w>32</w>
-      <h>128</h>
-    </coordinates>
-    <panel_attributes>lt=-
+bg=orange</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1411</x><y>520</y><w>40</w><h>160</h></coordinates><panel_attributes>lt=-
 m1=1
-m2=n</panel_attributes>
-    <additional_attributes>10.0;140.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>808</x>
-      <y>80</y>
-      <w>336</w>
-      <h>208</h>
-    </coordinates>
-    <panel_attributes>calendars_events
+m2=n</panel_attributes><additional_attributes>10;140;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1041</x><y>0</y><w>420</w><h>260</h></coordinates><panel_attributes>calendars_events
 --
 *id: int &lt;&lt;not null&gt;&gt; &lt;&lt;primary key&gt;&gt;*
 _calendar_id: int &lt;&lt;not null&gt;&gt; &lt;&lt;foreign key&gt;&gt;_
@@ -403,244 +117,54 @@ color: char(7) &lt;&lt;not null&gt;&gt;
 description: varchar(1000)
 visability: ("private","public") &lt;&lt;not null&gt;&gt;
 accessibility: ("free","busy","pre-approval","unavailable") &lt;&lt;not null&gt;&gt;
-bg=orange</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1104</x>
-      <y>280</y>
-      <w>32</w>
-      <h>144</h>
-    </coordinates>
-    <panel_attributes>lt=-
+bg=orange</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1411</x><y>250</y><w>40</w><h>180</h></coordinates><panel_attributes>lt=-
 m1=1
-m2=n</panel_attributes>
-    <additional_attributes>10.0;160.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>152</x>
-      <y>264</y>
-      <w>216</w>
-      <h>104</h>
-    </coordinates>
-    <panel_attributes>users_in_events
+m2=n</panel_attributes><additional_attributes>10;160;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>221</x><y>230</y><w>270</w><h>130</h></coordinates><panel_attributes>users_in_events
 --
 *id: int &lt;&lt;not null&gt;&gt; &lt;&lt;primary key&gt;&gt;*
 _user_id: int &lt;&lt;not null&gt;&gt; &lt;&lt;foreign key&gt;&gt;_
 _event_id: int &lt;&lt;not null&gt;&gt; &lt;&lt;foreign key&gt;&gt;_
 role: ("organizer","participant") &lt;&lt;not null&gt;&gt;
 present: ("yes","no","maybe") &lt;&lt;not null&gt;&gt;
-bg=orange</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1248</x>
-      <y>104</y>
-      <w>200</w>
-      <h>72</h>
-    </coordinates>
-    <panel_attributes>events_reminders
+bg=orange</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1591</x><y>30</y><w>250</w><h>90</h></coordinates><panel_attributes>events_reminders
 --
 *id: int &lt;&lt;not null&gt;&gt; &lt;&lt;primary key&gt;&gt;*
 _event_id: int &lt;&lt;not null&gt;&gt; &lt;&lt;foreign key&gt;&gt;_
 reminder_date: timestamp &lt;&lt;not null&gt;&gt;
-bg=orange</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>672</x>
-      <y>312</y>
-      <w>192</w>
-      <h>72</h>
-    </coordinates>
-    <panel_attributes>tags_in_events
+bg=orange</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>871</x><y>290</y><w>240</w><h>90</h></coordinates><panel_attributes>tags_in_events
 --
 *id: int &lt;&lt;not null&gt;&gt; &lt;&lt;primary key&gt;&gt;*
 _tag_id: int &lt;&lt;not null&gt;&gt; &lt;&lt;foreign key&gt;&gt;_
 _event_id: int &lt;&lt;not null&gt;&gt; &lt;&lt;foreign key&gt;&gt;_
-bg=orange</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>944</x>
-      <y>280</y>
-      <w>32</w>
-      <h>464</h>
-    </coordinates>
-    <panel_attributes>lt=-
+bg=orange</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1211</x><y>250</y><w>40</w><h>580</h></coordinates><panel_attributes>lt=-
 m1=n
-m2=n</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;560.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>856</x>
-      <y>352</y>
-      <w>112</w>
-      <h>24</h>
-    </coordinates>
-    <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>120.0;10.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1136</x>
-      <y>240</y>
-      <w>192</w>
-      <h>568</h>
-    </coordinates>
-    <panel_attributes>lt=-&gt;
-m2=1</panel_attributes>
-    <additional_attributes>10.0;10.0;210.0;10.0;210.0;690.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>168</x>
-      <y>936</y>
-      <w>192</w>
-      <h>72</h>
-    </coordinates>
-    <panel_attributes>workspaces
+m2=n</panel_attributes><additional_attributes>10;10;10;560</additional_attributes></element><element><id>Relation</id><coordinates><x>1101</x><y>340</y><w>140</w><h>30</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>120;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1451</x><y>200</y><w>240</w><h>710</h></coordinates><panel_attributes>lt=-&gt;
+m2=1</panel_attributes><additional_attributes>10;10;210;10;210;690</additional_attributes></element><element><id>UMLClass</id><coordinates><x>241</x><y>1070</y><w>240</w><h>90</h></coordinates><panel_attributes>workspaces
 --
 *id: int &lt;&lt;not null&gt;&gt; &lt;&lt;primary key&gt;&gt;*
 _user_id: int &lt;&lt;not null&gt;&gt; &lt;&lt;foreign key&gt;&gt;_
 name: varchar(32) &lt;&lt;not null&gt;&gt;
-bg=cyan</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1136</x>
-      <y>128</y>
-      <w>128</w>
-      <h>32</h>
-    </coordinates>
-    <panel_attributes>lt=-
+bg=cyan</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1451</x><y>60</y><w>160</w><h>40</h></coordinates><panel_attributes>lt=-
 m1=1
-m2=n</panel_attributes>
-    <additional_attributes>10.0;10.0;140.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>304</x>
-      <y>240</y>
-      <w>520</w>
-      <h>384</h>
-    </coordinates>
-    <panel_attributes>lt=-
+m2=n</panel_attributes><additional_attributes>10;10;140;10</additional_attributes></element><element><id>Relation</id><coordinates><x>411</x><y>200</y><w>650</w><h>480</h></coordinates><panel_attributes>lt=-
 m1=n
-m2=n</panel_attributes>
-    <additional_attributes>630.0;10.0;190.0;10.0;190.0;390.0;10.0;390.0;10.0;460.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>360</x>
-      <y>312</y>
-      <w>112</w>
-      <h>24</h>
-    </coordinates>
-    <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>120.0;10.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>256</x>
-      <y>672</y>
-      <w>32</w>
-      <h>280</h>
-    </coordinates>
-    <panel_attributes>lt=-
+m2=n</panel_attributes><additional_attributes>630;10;190;10;190;390;10;390;10;460</additional_attributes></element><element><id>Relation</id><coordinates><x>481</x><y>290</y><w>140</w><h>30</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>120;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>351</x><y>740</y><w>40</w><h>350</h></coordinates><panel_attributes>lt=-
 m1=1
-m2=n</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;330.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>352</x>
-      <y>688</y>
-      <w>752</w>
-      <h>296</h>
-    </coordinates>
-    <panel_attributes>lt=-
+m2=n</panel_attributes><additional_attributes>10;10;10;330</additional_attributes></element><element><id>Relation</id><coordinates><x>471</x><y>760</y><w>940</w><h>370</h></coordinates><panel_attributes>lt=-
 m1=n
-m2=n</panel_attributes>
-    <additional_attributes>910.0;10.0;910.0;340.0;10.0;340.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>392</x>
-      <y>1056</y>
-      <w>232</w>
-      <h>88</h>
-    </coordinates>
-    <panel_attributes>projects_in_workspaces
+m2=n</panel_attributes><additional_attributes>910;10;910;340;10;340</additional_attributes></element><element><id>UMLClass</id><coordinates><x>521</x><y>1220</y><w>290</w><h>110</h></coordinates><panel_attributes>projects_in_workspaces
 --
 *id: int &lt;&lt;not null&gt;&gt; &lt;&lt;primary key&gt;&gt;*
 _project_id: int &lt;&lt;not null&gt;&gt; &lt;&lt;foreign key&gt;&gt;_
 _workspace_id: int &lt;&lt;not null&gt;&gt; &lt;&lt;foreign key&gt;&gt;_
 position: int &lt;&lt;not null&gt;&gt;
-bg=cyan</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>504</x>
-      <y>952</y>
-      <w>24</w>
-      <h>120</h>
-    </coordinates>
-    <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;130.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1400</x>
-      <y>608</y>
-      <w>248</w>
-      <h>96</h>
-    </coordinates>
-    <panel_attributes>boards
+bg=cyan</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>661</x><y>1090</y><w>30</w><h>150</h></coordinates><panel_attributes>lt=.</panel_attributes><additional_attributes>10;10;10;130</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1781</x><y>660</y><w>310</w><h>120</h></coordinates><panel_attributes>boards
 --
 *id: int &lt;&lt;not null&gt;&gt; &lt;&lt;primary key&gt;&gt;*
 _project_id: int &lt;&lt;not null&gt;&gt; &lt;&lt;foreign key&gt;&gt;_
 name: varchar(32) &lt;&lt;not null&gt;&gt;
 icon: varchar(32) &lt;&lt;not null&gt;&gt;
 position: int &lt;&lt;not null&gt;&gt;
-bg=pink</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1200</x>
-      <y>640</y>
-      <w>216</w>
-      <h>32</h>
-    </coordinates>
-    <panel_attributes>lt=-
+bg=pink</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1531</x><y>700</y><w>270</w><h>40</h></coordinates><panel_attributes>lt=-
 m1=1
-m2=n</panel_attributes>
-    <additional_attributes>10.0;10.0;250.0;10.0</additional_attributes>
-  </element>
-</diagram>
+m2=n</panel_attributes><additional_attributes>10;10;250;10</additional_attributes></element></diagram>

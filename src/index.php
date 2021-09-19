@@ -2,9 +2,9 @@
 session_start();
 
 require_once __DIR__ . '/datatypes/ReturnCodes.php';
-require_once __DIR__ . '/services/Authorize.php';
-require_once __DIR__ . '/services/Projects.php';
-require_once __DIR__ . '/services/Tasks.php';
+require_once __DIR__ . '/services/Users.php';
+//require_once __DIR__ . '/services/Projects.php';
+//require_once __DIR__ . '/services/Tasks.php';
 
 class ServiceHandler {
     private static self $instance;
@@ -31,18 +31,18 @@ class ServiceHandler {
 
                 // api path defining starts here
 
-                case 'authorize': {
-                    (new Authorize())->proceed(array_slice($request, 1));
+                case 'users': {
+                    (new Users())->proceed(array_slice($request, 1));
                     break;
                 }
 
                 case 'projects': {
-                    (new Projects())->proceed((array_slice($request, 1)));
+//                    (new Projects())->proceed((array_slice($request, 1)));
                     break;
                 }
 
                 case 'tasks': {
-                    (new Tasks())->proceed(array_slice($request, 1));
+//                    (new Tasks())->proceed(array_slice($request, 1));
                     break;
                 }
             }

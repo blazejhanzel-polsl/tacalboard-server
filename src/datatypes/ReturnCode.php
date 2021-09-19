@@ -42,6 +42,13 @@ class ReturnCode {
     }
 
     /**
+     * @return int
+     */
+    public function getStatus(): int {
+        return $this->status;
+    }
+
+    /**
      * @param string $detail
      */
     final public function setDetail(string $detail): void {

@@ -116,6 +116,17 @@ class NotFound extends ReturnCode {
     }
 }
 
+class OK extends ReturnCode {
+    public function __construct() {
+        parent::__construct(
+            200,
+            "ok",
+            "OK",
+            "Request end with OK status."
+        );
+    }
+}
+
 class UniqueAlreadyUsed extends ReturnCode {
     public function __construct() {
         parent::__construct(

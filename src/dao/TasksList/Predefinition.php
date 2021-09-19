@@ -10,6 +10,7 @@ namespace TasksList {
         public static function ONLY_PREDEFINED(): Predefinition {
             return new Predefinition(self::ONLY_PREDEFINED);
         }
+
         public static function ONLY_USER_DEFINED(): Predefinition {
             return new Predefinition(self::ONLY_USER_DEFINED);
         }

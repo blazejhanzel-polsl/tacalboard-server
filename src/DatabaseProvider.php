@@ -46,11 +46,15 @@ class DatabaseProvider {
     }
 
     public static function transactionBegin() {
+        self::checkInstance();
+
         self::$transaction = true;
         self::$instance->connection->begin_transaction();
     }
 
     public static function transactionEnd() {
+        self::checkInstance();
+
         self::$transaction = false;
         try {
             self::$instance->connection->commit();

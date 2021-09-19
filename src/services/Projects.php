@@ -51,7 +51,7 @@ class Projects extends Service {
         if (isset($_SESSION['user_id'])) {
             $json = json_decode(file_get_contents('php://input'));
 
-            if (isset($json->team_id) && isset($json->name)) {
+            if (isset($json->team_id, $json->name)) {
                 $role = UsersInTeam::getUserRoleByTeamId($_SESSION['user_id'], $json->team_id);
                 if ($role == "owner" || $role == "member") {
                     $project = Project::create($json->team_id, $json->name);
@@ -75,7 +75,7 @@ class Projects extends Service {
         if (isset($_SESSION['user_id'])) {
             $json = json_decode(file_get_contents('php://input'));
 
-            if (isset($json->id) && isset($json->team_id) && isset($json->name) && isset($json->position)) {
+            if (isset($json->id, $json->team_id, $json->name, $json->position)) {
                 $role = UsersInTeam::getUserRoleByTeamId($_SESSION['user_id'], $json->team_id);
                 if ($role == "owner" || $role == "member") {
                     if (!is_null(Project::getById($json->id))) {
